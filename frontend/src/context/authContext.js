@@ -18,14 +18,25 @@ export const AuthProvider = ({ children }) => {
     const token = Cookies.get("authorized");
     if (token) {
       const user = await validateToken();
-      setUser({ user });
-      router.push("/chatspace");
+      setUser(user);
+      if (router.path == "/login" || router.path == "/signup") {
+        router.push("/chatspace");
+        router.events.on("routeChangeComplete", () => {
+          setLoading(false);
+        });
+      } else {
+        setLoading(false);
+      }
     } else {
       if (router.pathname !== "/login" && router.pathname !== "/signup") {
         router.push("/login");
+        router.events.on("routeChangeComplete", () => {
+          setLoading(false);
+        });
+      } else {
+        setLoading(false);
       }
     }
-    setLoading(false);
   };
 
   if (loading) {
@@ -33,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

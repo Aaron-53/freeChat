@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EmojiPicker from "emoji-picker-react";
 import emoji from "@/assets/chatSpace/emoji.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,9 +7,24 @@ import Image from "next/image";
 
 function EmojiInput({ onEmojiClick }) {
   const [showPicker, setShowPicker] = useState(false);
+  const pickerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        setShowPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div style={{ display: "inline-block" }}>
+    <div style={{ display: "inline-block" }} ref={pickerRef}>
       {/* Button */}
       <button
         onClick={() => setShowPicker((prev) => !prev)}

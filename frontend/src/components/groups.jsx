@@ -12,9 +12,9 @@ function Groups() {
           const givenTime = moment(group.last_msg.time);
           const now = moment();
           return (
-            <>
+            <div key={index}>
               {index != 0 ? (
-                <div className="min-h-[1px] bg-[#B4ABAB] w-full " />
+                <div className="min-h-[1px] bg-[#B4ABAB] w-full mb-2" />
               ) : (
                 <></>
               )}
@@ -33,13 +33,13 @@ function Groups() {
                     {givenTime.isSame(now, "day")
                       ? givenTime.format("HH:mm A")
                       : givenTime.isSame(now.clone().subtract(1, "day"), "day")
-                        ? "Yesterday"
-                        : givenTime.isAfter(
-                              now.clone().subtract(7, "days"),
-                              "day",
-                            )
-                          ? givenTime.format("dddd")
-                          : givenTime.format("MM/DD/YYYY")}
+                      ? "Yesterday"
+                      : givenTime.isAfter(
+                          now.clone().subtract(7, "days"),
+                          "day"
+                        )
+                      ? givenTime.format("dddd")
+                      : givenTime.format("MM/DD/YYYY")}
                   </p>
                   {group.unread > 0 ? (
                     <div className="bg-[#F24E1E] rounded-full w-4 h-4 font-light text-white flex justify-center items-center text-base font-sans mr-2">
@@ -50,7 +50,7 @@ function Groups() {
                   )}
                 </div>
               </div>
-            </>
+            </div>
           );
         })}
       </div>

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-("");
 import a from "@/assets/temp/People/A.png";
 import phone from "@/assets/chatSpace/phone.svg";
 import video from "@/assets/chatSpace/video.svg";
@@ -48,6 +47,7 @@ function ChatSpace() {
             <label htmlFor="inputFile">
               <Image src={pin} alt="" />
             </label>
+            <EmojiInput onEmojiClick={onEmojiClick} />
             <input
               type="text"
               onChange={(e) => {
@@ -60,7 +60,6 @@ function ChatSpace() {
             />
           </div>
           <div className="flex gap-5">
-            <EmojiInput onEmojiClick={onEmojiClick} />
             <Webcam />
           </div>
         </div>

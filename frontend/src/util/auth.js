@@ -1,15 +1,20 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const validateToken = async () => {
-  try {
-    const response = await axios.get(process.env.NEXT_PUBLIC_API, {
+  const response = await axios
+    .get(process.env.NEXT_PUBLIC_API, {
       withCredentials: true,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Token validation failed:", error);
+      throw error;
     });
-    return response.data;
-  } catch (error) {
-    console.error("Token validation failed:", error);
-    throw error;
-  }
+
+  return response;
 };
 
 const login = async (username, password) => {
@@ -20,7 +25,7 @@ const login = async (username, password) => {
         username,
         password,
       },
-      { withCredentials: true },
+      { withCredentials: true }
     )
     .then((res) => {
       return res;
@@ -30,6 +35,11 @@ const login = async (username, password) => {
       throw error;
     });
   return res;
+};
+
+const logout = () => {
+  Cookies.remove("authorized");
+  window.location.reload();
 };
 
 const signup = async (username, password, email) => {
@@ -41,7 +51,7 @@ const signup = async (username, password, email) => {
         password,
         email,
       },
-      { withCredentials: true },
+      { withCredentials: true }
     )
     .then((res) => {
       return res;
@@ -53,4 +63,4 @@ const signup = async (username, password, email) => {
   return res;
 };
 
-module.exports = { validateToken, login };
+module.exports = { validateToken, login, logout, signup };
